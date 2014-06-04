@@ -1,0 +1,24 @@
+<div ng-controller="editorCtrl" class="editor" ng-show="openFiles.length > 0">
+			<div class="editor-tabs-shell">
+				<div class="editor-tabs" tab-resize="openFiles">
+					<div class="editor-tab" ng-repeat="file in openFiles" ng-style="{'width': tabWidth}" ng-click="setSelectedIndex($index)">
+						<div class="editor-tab-favicon" style="background-image: url('images/java.png')"></div>
+	                    <div class="editor-tab-title">{{file.name}}</div>
+	                    <div class="editor-tab-close" ng-click="closeTab($index)"></div>
+	                    <div class="editor-tab-curves">
+	                        <div class="editor-tab-curve-left-shadow2"></div>
+	                        <div class="editor-tab-curve-left-shadow1"></div>
+	                        <div class="editor-tab-curve-left"></div>
+	                        <div class="editor-tab-curve-right-shadow2"></div>
+	                        <div class="editor-tab-curve-right-shadow1"></div>
+	                        <div class="editor-tab-curve-right"></div>
+	                    </div>
+					</div><!-- End div .editor-tab -->
+				</div><!-- End div .editor-tabs -->
+				<div class="addTab"><a href="#" ng-click="addTab()"></a></div>
+			</div><!-- End div .editor-tabs-shell -->
+			<div class="editor-shell-bottom-bar"></div>
+				<div ui-ace="{onLoad : aceLoaded}" ng-model="openFiles[selectedIndex].content">
+				</div>
+			
+</div>
