@@ -8,9 +8,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 
-public class Compiler {
+public class CompileRunDebugService {
    
-	public Compiler(){
+	/************Constructor***************/
+	public CompileRunDebugService(){
 		
 	}
 	
