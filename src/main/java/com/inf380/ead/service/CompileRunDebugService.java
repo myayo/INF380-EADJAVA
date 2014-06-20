@@ -20,7 +20,8 @@ public class CompileRunDebugService {
 	/**
 	 * compile all the java file present in the package sourcesDir
 	 */
-	public boolean compile( String sourcesDirPathName, String classOutputDirPathName ) throws IOException {
+	public String compile( String sourcesDirPathName, String classOutputDirPathName ) throws IOException {	
+		String result = null;
 		boolean success=true;
 		System.out.println( "Compiling files from "+ sourcesDirPathName+"..." );
 		//compile all the java files with the command javac
@@ -33,12 +34,11 @@ public class CompileRunDebugService {
 				p.waitFor();
 			} catch( InterruptedException ie ) { System.out.println( ie ); }
 			int ret = p.exitValue();
-			//
 			success=(ret==0);
 			if(!success){
-				System.out.println("Compilation Failed!");
+				result="Compilation Failed! /r";
 				try {
-					printLines("----Compilation error----",p.getErrorStream());
+					result=result+getLines("----compilation error----",p.getErrorStream());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -46,9 +46,9 @@ public class CompileRunDebugService {
 			}
 		}
 		if(success){
-			System.out.println("Compilation Succeed!");
+			result="Compilation Succeed!";
 		}
-		return success;
+		return result;
 	}
 		
 	
@@ -57,20 +57,25 @@ public class CompileRunDebugService {
 	 */
 	 public void run(String mainClassName, String classOutputDirPathName) {
 		    System.out.println( "Running main from class "+ mainClassName+"..." );
-			try {
-				//run the class containing the method main with the command java
-				Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
-				//print the output of the run if any
-				printLines("----Result----", p.getInputStream());
-				//print the error if any
-		        printLines("----stderr----", p.getErrorStream());
-		        //wait process end
-			    p.waitFor();
-				int ret = p.exitValue();
-			} 
-			catch( InterruptedException ie ) { System.out.println( ie );} 
-			catch (IOException e) {e.printStackTrace();}
-			catch (Exception e) {e.printStackTrace();}
+				String result=null;
+				String error=null;
+			    try {
+					//run the class containing the method main with the command java
+					Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
+			        error=getLines("----stderr----", p.getErrorStream());
+					if(error==null){
+						result=getLines("----Result----", p.getInputStream());
+					}
+					else{
+						result=error;
+					}
+			        //wait process end
+				    p.waitFor();
+				} 
+				catch( InterruptedException ie ) { System.out.println( ie );} 
+				catch (IOException e) {e.printStackTrace();}
+				catch (Exception e) {e.printStackTrace();}
+				return result;
 	    }
 	 
 	/**
@@ -78,32 +83,36 @@ public class CompileRunDebugService {
 	 * put the generate class in the directory classOutputDir
 	 * then execute the class containing the method main
 	 */
-		public void compileRun(String sourcesDirPathName, String classOutputDirPathName , String mainClass){
+		public String compileRun(String sourcesDirPathName, String classOutputDirPathName , String mainClass){
+			String result = null;
 			try {
-				boolean result=compile(sourcesDirPathName,classOutputDirPathName);
-				if(result){
-					run(mainClass, classOutputDirPathName);
+				result=compile(sourcesDirPathName,classOutputDirPathName);
+				if(result.equals("Compilation Succeed!")){
+					result=run(mainClass, classOutputDirPathName);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			return result;
 		}
 		
 	 /**
 	  * Print the lines in the stream
 	  */
-    public void printLines(String name, InputStream is) throws Exception {
-        String line = null;
+    public String getLines(String name, InputStream is) throws Exception {
+    	String result = null;
+    	String line = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         line = br.readLine();
         if(line!=null){
-	        System.out.println(name ); 
+        	result=result+"/r"+name;
 	        while (line!= null) {
-	            System.out.println(line);
-	            line = br.readLine();
+	        	result=result+"/r"+line;
+	        	line = br.readLine();
 	        }
         }
+        return result;
       }
     
 	/** 
