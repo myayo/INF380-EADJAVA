@@ -1,4 +1,57 @@
 <!-- Explorer -->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">New class</h4>
+          </div>
+          <div class="modal-body">
+              <label>Name</label><input/>
+              <label>Package</label><input/>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary">Create</button>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">New interface</h4>
+          </div>
+          <div class="modal-body">
+              <label>Name </label><input/>
+              <label>Package</label><input/>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary">Create</button>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">New folder</h4>
+          </div>
+          <div class="modal-body">
+              <label>Name </label><input/>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary">Create</button>
+          </div>
+        </div>
+    </div>
+</div>
 <div id="sidebar" data-ng-controller="explorerCtrl">
 
 	<ul class="control">
@@ -7,11 +60,11 @@
 		<li class="dropdown pull-right">
 		    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-plus"></i></a>
 				<ul class="dropdown-menu">
-					<li><a href="#">New Class <span	class="glyphicon glyphicon-file pull-right"></span></a></li>
+					<li><a href="#" class="glyphicon glyphicon-file pull-right" data-toggle="modal" data-target="#myModal">New Class </a></li>
 					<li class="divider"></li>
-					<li><a href="#">New Interface <span	class="glyphicon glyphicon-file pull-right"></span></a></li>
+					<li><a href="#" class="glyphicon glyphicon-file pull-right" data-toggle="modal" data-target="#myModal2">New Interface </a></li>
 					<li class="divider"></li>
-					<li><a href="#">New Folder <span class="glyphicon glyphicon-folder-open pull-right"></span></a></li>
+					<li><a href="#" class="glyphicon glyphicon-file pull-right" data-toggle="modal" data-target="#myModal3">New Folder </a></li>
 				</ul>
 		</li>
 	</ul>
