@@ -152,7 +152,7 @@
           };
           scope.tree_rows = [];
           on_treeData_change = function() {
-            var add_branch_to_list, root_branch, _i, _len, _ref, _results;
+        	var add_branch_to_list, root_branch, _i, _len, _ref, _results;
             for_each_branch(function(b, level) {
               if (!b.uid) {
                 return b.uid = "" + Math.random();

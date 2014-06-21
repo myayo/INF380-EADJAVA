@@ -1,5 +1,5 @@
 angular.module("eadApp")
-.controller("AppCtrl", function($scope,FileService){
+.controller("AppCtrl", function($scope,$rootScope, FileService){
 	
 	$scope.username = "Marcel";
 	$scope.projects = [];
@@ -10,6 +10,10 @@ angular.module("eadApp")
 		switch (obj.action) {
 		case "getProject":
 			$scope.projects = obj.projects;
+			break;
+			
+		case "loadProjectFile":
+			$rootScope.$broadcast("projectFiles", {files: obj.files});
 			break;
 
 		default:
@@ -103,6 +107,12 @@ angular.module("eadApp")
 			$rootScope.$broadcast("loadFile", {file: file});
 		}
 	};
+	
+	$scope.$on("projectFiles", function(events, args) {
+		$scope.files = [args.files];
+		$scope.$apply();
+		
+	});
 	
 	
 	

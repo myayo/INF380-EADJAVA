@@ -1,5 +1,6 @@
 package com.inf380.ead.endpoint;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
@@ -62,16 +63,20 @@ public class FileEndPoint {
 			for (String project : projectsName) {
 				arrayBuilder.add(project);
 			}
-			JsonObject obj = Json.createObjectBuilder().add("action", action).add("projects", arrayBuilder.build()).build();
+			JsonObject obj = Json.createObjectBuilder().add("action", action).add("projects", arrayBuilder).build();
 			result = obj.toString();
 			break;
 		case "loadProjectFile":
 			//get the file tree;
-
+			path = jsonObject.getString("path");
+			JsonObject fileTree = Json.createObjectBuilder().add("action", action)
+					.add("files", fileService.getFileTree(fileService.getProjectsBaseUrl()+ username + File.separator + path, username)).build();
+			result = fileTree.toString();
 		default:
 			break;
 		}
 		System.out.println("result " + result);
 		return result;
 	}
+
 }

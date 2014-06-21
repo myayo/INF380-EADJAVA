@@ -1,9 +1,15 @@
 package com.inf380.ead.service;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 
 import org.apache.commons.io.FileUtils;
 
@@ -74,11 +80,43 @@ public class FileService {
 		return projects;
 	}
 
+	public JsonObjectBuilder getFileTree(String dir,String username) throws IOException{
+		JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
+		File file = new File(dir);
+		if(file.exists()){
+			objectBuilder.add("label", file.getName());
+			objectBuilder.add("path", file.getAbsolutePath().substring((projectsBaseUrl+username).length() + 1));
+			if(file.isDirectory()){
+				//build children
+				JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+				for (File ChildrenFile : file.listFiles()) {
+					arrayBuilder.add(getFileTree(ChildrenFile.getAbsolutePath(), username));
+				}
+				objectBuilder.add("children", arrayBuilder);
+			}else{
+				//get content
+				BufferedReader reader = new BufferedReader(new FileReader(file));
+				String lu = null;
+				String content = "";
+				while((lu = reader.readLine())!= null){
+					content += lu +"\n"; 
+				}
+				reader.close();
+				objectBuilder.add("src", content);
+			}
+		}
+		return objectBuilder;
+	}
+
 	/**
 	 * For Testing purpose
 	 */
 	public void setProjectsBaseUrl(String projectsBaseUrl) {
 		this.projectsBaseUrl = projectsBaseUrl;
+	}
+
+	public String getProjectsBaseUrl() {
+		return projectsBaseUrl;
 	}
 
 }
