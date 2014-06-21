@@ -47,8 +47,8 @@ public class FileServiceTest {
 	public void testGetProject(){
 		fileService.setProjectsBaseUrl("src/test/resources/");
 		List<String> projects = fileService.getProjects("Marcel");
-		assertEquals(projects.size(), 2);
+		assertEquals(projects.size(), 1);
 		assertTrue(projects.contains("Test"));
-		assertTrue(projects.contains("Project"));
+		
 	}
 }

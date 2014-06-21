@@ -4,7 +4,9 @@ html, body {
    font-family:verdana,arial,sans-serif;
    color:#555555;
 }
-
+.boutmenu {
+    margin-top: 8px;
+}
 div[data-tree-model] ul{
 	width: 100%;
 	padding-top: 15px;
@@ -299,7 +301,7 @@ margin-left: -29px;
     z-index: 9;
 }
 
-@CHARSET "UTF-8";
+
 .editor-tabs-shell {
   position: relative;
   background-color: #e0e0e0;
