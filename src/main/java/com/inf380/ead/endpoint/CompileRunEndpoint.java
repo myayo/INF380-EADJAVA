@@ -1,5 +1,6 @@
 package com.inf380.ead.endpoint;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -22,26 +23,31 @@ public class CompileRunEndpoint {
 	 */
 	@OnMessage
 	public String onMessage(String message) throws IOException{
+		System.out.println("receiving message  : "+message);
 		String result = "";
 		//decode message
 		JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
 		CompileRunDebugService compileRunDebugService = new CompileRunDebugService();
 		String action = jsonObject.getString("action");
 		String path = jsonObject.getString("path");
-		String mainClassPath = "";
+		String mainClassName = "";
 		switch (action) {
 		case "compile":
 			result = compileRunDebugService.compile(path, path + "/bin");
 			break;
 		case "run":
-			mainClassPath = jsonObject.getString("mainClassPath"); 
-			result = compileRunDebugService.run(mainClassPath, path+ "/bin");
+			mainClassName = jsonObject.getString("mainClassPath"); 
+			result = compileRunDebugService.run(mainClassName, path+ "/bin");
 			break;
 		case "compilerun":
-			mainClassPath = jsonObject.getString("mainClassPath");
-			result = compileRunDebugService.compileRun(path, path+ "/bin", mainClassPath);
+			mainClassName = jsonObject.getString("mainClassName");
+			mainClassName = mainClassName.substring(0, mainClassName.indexOf('.'));
+			String username = jsonObject.getString("username");
+			String projectPath = compileRunDebugService.getProjectsBaseUrl() + username +File.separator+ path;
+			result = compileRunDebugService.compileRun( projectPath , projectPath+ "/bin",mainClassName);
 			break;
 		}
+		System.out.println("Result : "+result);
 		return result;
 	}
 }

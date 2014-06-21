@@ -61,7 +61,7 @@ angular.module("eadApp")
 		var wsUrl = "ws://"+document.location.host + "/ead/" + "compileRunEndpoint";
 		var webSocket = new WebSocket(wsUrl);
 		
-		websocket.onopen = function(){
+		webSocket.onopen = function(){
 			compileRunService.callback("CONNECTED");
 		};
 		
@@ -73,11 +73,11 @@ angular.module("eadApp")
 			compileRunService.callback("DISCONNECTED");
 		};
 		
-		websocket.message = function(message){
+		webSocket.message = function(message){
 			compileRunService.callback(message);
 		};
 		
-		compileRunService.ws = websocket;
+		compileRunService.ws = webSocket;
 	};
 	
 	compileRunService.subscribe = function(callback){
@@ -85,18 +85,20 @@ angular.module("eadApp")
 	};
 	
 	compileRunService.compile = function(path){
-		 compileRunService.ws.send(JSON.stringyfy({
+		 compileRunService.ws.send(JSON.stringify({
 			 action: "compile",
 			 path: path
 		 }));
 	};
 	
-	compileRunService.compileAndRun = function(path, mainClass){
-		 compileRunService.ws.send({
+	compileRunService.compileAndRun = function(path, mainClass, username){
+		
+		 compileRunService.ws.send(JSON.stringify({
 			 action: "compilerun",
 			 path: path,
-			 mainClassPath: mainClass
-		 });
+			 mainClassName: mainClass,
+			 username: username
+		 }));
 	};
 	
 	compileRunService.Run = function(path, mainClass){
