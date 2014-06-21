@@ -1,1 +1,1 @@
-angular.module("eadApp", ["angularBootstrapNavTree", "ui.ace"]);
+angular.module("eadApp", ["angularBootstrapNavTree", "ui.ace", "ng-context-menu"]);

@@ -2,6 +2,8 @@ package com.inf380.ead.service;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -9,6 +11,8 @@ import org.apache.commons.io.FileUtils;
  * Class that manage file Operation
  */
 public class FileService {
+
+	private String projectsBaseUrl = "/home/ubuntu/inf380/";
 
 	/**
 	 * Create a file or a directory and store it to 
@@ -51,6 +55,32 @@ public class FileService {
 			file.delete();
 		}
 	}
+
+	/**
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public List<String> getProjects(String username) {
+		List<String> projects = new ArrayList<>();
+		File userFolder = new File(projectsBaseUrl+ username);
+		if(userFolder.exists() && userFolder.isDirectory()){
+			for (File file : userFolder.listFiles()) {
+				if(file.isDirectory()){
+					projects.add(file.getName());
+				}
+			}
+		}
+		return projects;
+	}
+
+	/**
+	 * For Testing purpose
+	 */
+	public void setProjectsBaseUrl(String projectsBaseUrl) {
+		this.projectsBaseUrl = projectsBaseUrl;
+	}
+
 }
 
 

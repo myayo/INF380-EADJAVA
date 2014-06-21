@@ -9,14 +9,14 @@ import java.util.ArrayList;
 
 
 public class CompileRunDebugService {
-   
+
 	/************Constructor***************/
 	public CompileRunDebugService(){
-		
+
 	}
-	
+
 	/************Methods***************/
-	
+
 	/**
 	 * compile all the java file present in the package sourcesDir
 	 */
@@ -50,85 +50,85 @@ public class CompileRunDebugService {
 		}
 		return result;
 	}
-		
-	
+
+
 	/**
 	 * run the class containing the method main
 	 */
-	 public void run(String mainClassName, String classOutputDirPathName) {
-		    System.out.println( "Running main from class "+ mainClassName+"..." );
-				String result=null;
-				String error=null;
-			    try {
-					//run the class containing the method main with the command java
-					Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
-			        error=getLines("----stderr----", p.getErrorStream());
-					if(error==null){
-						result=getLines("----Result----", p.getInputStream());
-					}
-					else{
-						result=error;
-					}
-			        //wait process end
-				    p.waitFor();
-				} 
-				catch( InterruptedException ie ) { System.out.println( ie );} 
-				catch (IOException e) {e.printStackTrace();}
-				catch (Exception e) {e.printStackTrace();}
-				return result;
-	    }
-	 
+	public String run(String mainClassName, String classOutputDirPathName) {
+		System.out.println( "Running main from class "+ mainClassName+"..." );
+		String result=null;
+		String error=null;
+		try {
+			//run the class containing the method main with the command java
+			Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
+			error=getLines("----stderr----", p.getErrorStream());
+			if(error==null){
+				result=getLines("----Result----", p.getInputStream());
+			}
+			else{
+				result=error;
+			}
+			//wait process end
+			p.waitFor();
+		} 
+		catch( InterruptedException ie ) { System.out.println( ie );} 
+		catch (IOException e) {e.printStackTrace();}
+		catch (Exception e) {e.printStackTrace();}
+		return result;
+	}
+
 	/**
 	 * compile the java files in the directory sourcesDir
 	 * put the generate class in the directory classOutputDir
 	 * then execute the class containing the method main
 	 */
-		public String compileRun(String sourcesDirPathName, String classOutputDirPathName , String mainClass){
-			String result = null;
-			try {
-				result=compile(sourcesDirPathName,classOutputDirPathName);
-				if(result.equals("Compilation Succeed!")){
-					result=run(mainClass, classOutputDirPathName);
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public String compileRun(String sourcesDirPathName, String classOutputDirPathName , String mainClass){
+		String result = null;
+		try {
+			result=compile(sourcesDirPathName,classOutputDirPathName);
+			if(result.equals("Compilation Succeed!")){
+				result=run(mainClass, classOutputDirPathName);
 			}
-			return result;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-	 /**
-	  * Print the lines in the stream
-	  */
-    public String getLines(String name, InputStream is) throws Exception {
-    	String result = null;
-    	String line = null;
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        line = br.readLine();
-        if(line!=null){
-        	result=result+"/r"+name;
-	        while (line!= null) {
-	        	result=result+"/r"+line;
-	        	line = br.readLine();
-	        }
-        }
-        return result;
-      }
-    
+		return result;
+	}
+
+	/**
+	 * Print the lines in the stream
+	 */
+	public String getLines(String name, InputStream is) throws Exception {
+		String result = null;
+		String line = null;
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		line = br.readLine();
+		if(line!=null){
+			result=result+"/r"+name;
+			while (line!= null) {
+				result=result+"/r"+line;
+				line = br.readLine();
+			}
+		}
+		return result;
+	}
+
 	/** 
 	 * return the list of java files present in the package
 	 */  
 	public ArrayList<File> getPkgFiles(String pkgPathName){
-	    File[] files=new File(pkgPathName).listFiles();
-	    ArrayList<File> javaFiles=new ArrayList<File>();
-	    for(int i=0; i<files.length; i++){
-	    	if(files[i].getName().endsWith(".java")){
-	    		javaFiles.add(files[i]);
-	    	}
-	    }
+		File[] files=new File(pkgPathName).listFiles();
+		ArrayList<File> javaFiles=new ArrayList<File>();
+		for(int i=0; i<files.length; i++){
+			if(files[i].getName().endsWith(".java")){
+				javaFiles.add(files[i]);
+			}
+		}
 		return javaFiles;
-		
+
 	}
- 
+
 }
- 
+

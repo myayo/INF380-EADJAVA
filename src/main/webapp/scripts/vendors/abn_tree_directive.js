@@ -7,7 +7,22 @@
     '$timeout', function($timeout) {
       return {
         restrict: 'E',
-        template: "<ul class=\"nav nav-list nav-pills nav-stacked abn-tree\">\n  <li ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-animate=\"'abn-tree-animate'\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"abn-tree-row\">\n    <a ng-click=\"user_clicks_branch(row.branch)\">\n      <i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\"> </i>\n      <span class=\"indented tree-label\">{{ row.label }} </span>\n    </a>\n  </li>\n</ul>",
+        template: "<ul class=\"nav nav-list nav-pills nav-stacked abn-tree\">" +
+        			"<li ng-repeat=\"row in tree_rows | filter:{visible:true} track by row.branch.uid\" ng-animate=\"'abn-tree-animate'\" ng-class=\"'level-' + {{ row.level }} + (row.branch.selected ? ' active':'')\" class=\"abn-tree-row\">" +
+        			"   <a ng-click=\"user_clicks_branch(row.branch)\" context-menu data-target=\" myMenu{{ $index }}\">" +
+        			"     	<i ng-class=\"row.tree_icon\" ng-click=\"row.branch.expanded = !row.branch.expanded\" class=\"indented tree-icon\">" +
+        			"	 	</i>" +
+        			"    	<span class=\"indented tree-label\">{{ row.label }} </span>" +
+        			"   </a>" +
+        			"   <div class=\"dropdown position-fixed\" id=\"myMenu{{ $index }}\">"+
+        			"		<ul class=\"dropdown-menu\" role=\"menu\" aria-labelledby=\"dropdownMenu2\">"+
+        			"			<li>"+
+        			"				<a class=\"pointer\" role=\"menuitem\" tabindex=\"1\">Select menu {{ $index + 1 }}</a>"+
+        			"			</li>"+
+        			"		</ul>"+		
+        			"   </div>"+
+        			"</li>" +
+        		  "</ul>",
         replace: true,
         scope: {
           treeData: '=',
@@ -104,6 +119,10 @@
           scope.user_clicks_branch = function(branch) {
             if (branch !== selected_branch) {
               return select_branch(branch);
+            }else{
+            	return $timeout(function() {
+					return scope.onSelect({branch: branch});
+				});
             }
           };
           get_parent = function(child) {
@@ -139,7 +158,6 @@
                 return b.uid = "" + Math.random();
               }
             });
-            console.log('UIDs are set.');
             for_each_branch(function(b) {
               var child, _i, _len, _ref, _results;
               if (angular.isArray(b.children)) {
@@ -233,7 +251,6 @@
             });
           }
           n = scope.treeData.length;
-          console.log('num root branches = ' + n);
           for_each_branch(function(b, level) {
             b.level = level;
             return b.expanded = b.level < expand_level;

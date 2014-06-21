@@ -1,9 +1,10 @@
-<div ng-controller="editorCtrl" class="editor" ng-show="openFiles.length > 0">
+<div ng-controller="editorCtrl">
+<div class="editor" ng-show="showEditor()">
 			<div class="editor-tabs-shell">
 				<div class="editor-tabs" tab-resize="openFiles">
 					<div class="editor-tab" ng-repeat="file in openFiles" ng-style="{'width': tabWidth}" ng-click="setSelectedIndex($index)">
 						<div class="editor-tab-favicon" style="background-image: url('images/java.png')"></div>
-	                    <div class="editor-tab-title">{{file.name}}</div>
+	                    <div class="editor-tab-title">{{file.label}}</div>
 	                    <div class="editor-tab-close" ng-click="closeTab($index)"></div>
 	                    <div class="editor-tab-curves">
 	                        <div class="editor-tab-curve-left-shadow2"></div>
@@ -15,10 +16,27 @@
 	                    </div>
 					</div><!-- End div .editor-tab -->
 				</div><!-- End div .editor-tabs -->
-				<div class="addTab"><a href="#" ng-click="addTab()"></a></div>
 			</div><!-- End div .editor-tabs-shell -->
 			<div class="editor-shell-bottom-bar"></div>
-				<div ui-ace="{onLoad : aceLoaded}" ng-model="openFiles[selectedIndex].content">
+				<div ui-ace="{onLoad : aceLoaded}" ng-model="openFiles[selectedIndex].src">
 				</div>
 			
+</div>
+
+<div  class="panel panel-default" ng-hide="showEditor()">
+  <div class="panel-heading">
+    <h3 class="panel-title">Project</h3>
+  </div>
+  <div class="panel-body">
+	    <span ng-show="projects.length == 0">There are no project in your workspace use <span class="glyphicon glyphicon-plus"></span> to add Project</span>
+	    <div class ="well" ng-show="projects.length > 0">
+	    	<div class="label label-primary">You have <span class="badge">{{projects.length}}</span> project(s) in your workspace, click on one to load it</div>
+	    		<ul class="nav nav-pills">
+				  <li ng-repeat="project in projects">
+				  	<a ng-click="loadProjectFiles(project)">{{project}}</a>
+				  </li>
+				</ul>
+	    </div>
+  </div>
+</div>
 </div>

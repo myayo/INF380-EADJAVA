@@ -2,7 +2,6 @@ package com.inf380.ead.service;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +11,11 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipService {
 
+	/**
+	 * Create zip file from directory pathName
+	 * @param pathName
+	 * @throws IOException
+	 */
 	public void createZip(String pathName) throws IOException{
 		File dir = new File(pathName);
 		List<String> fileList = getFileList(dir, dir.getAbsolutePath());
@@ -21,7 +25,7 @@ public class ZipService {
 
 		for(String filePath:fileList){
 			ZipEntry ze=new ZipEntry(filePath);
-			
+
 			zos.putNextEntry(ze);
 			FileInputStream fis = new FileInputStream(pathName+File.separator+filePath);
 			byte[] buffer=new byte[1024];
@@ -40,9 +44,12 @@ public class ZipService {
 		List<String> filesInDir = new ArrayList<String>();
 		File[] files=dir.listFiles();
 		for(File file:files){
-			if(file.isFile() )
+			if(file.isFile()){
 				filesInDir.add(file.getAbsoluteFile().toString().substring(sourceFolder.length()+1, file.getAbsoluteFile().toString().length()));
-			else filesInDir.addAll(getFileList(file, sourceFolder));
+			}
+			else {
+				filesInDir.addAll(getFileList(file, sourceFolder));
+			}
 		}
 		return filesInDir;
 	}

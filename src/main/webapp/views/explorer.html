@@ -1,12 +1,21 @@
 <!-- Explorer -->
-<div class="column col-sm-2 col-xs-1 sidebar-offcanvas well" id="sidebar">
+<div id="sidebar" data-ng-controller="explorerCtrl">
 
 	<ul class="control">
-		<li class="logo">E</li>
-		<li class="glyphicon glyphicon-refresh"></li>
+		<li class="glyphicon glyphicon-refresh" class="toolBar"></li>
+		<li class="dropdown pull-right">
+		    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-plus"></i></a>
+				<ul class="dropdown-menu">
+					<li><a href="#">New Class <span	class="glyphicon glyphicon-file pull-right"></span></a></li>
+					<li class="divider"></li>
+					<li><a href="#">New Interface <span	class="glyphicon glyphicon-file pull-right"></span></a></li>
+					<li class="divider"></li>
+					<li><a href="#">New Folder <span class="glyphicon glyphicon-folder-open pull-right"></span></a></li>
+				</ul>
+		</li>
 	</ul>
 	
-	<abn-tree tree-data="projetFiles"></abn-tree>
+	<abn-tree tree-data="files" on-select="loadFile(branch)"></abn-tree>
 	
 	<ul class="list-unstyled hidden-xs" id="sidebar-footer">
 		<li>INF380</li>

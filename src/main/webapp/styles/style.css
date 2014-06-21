@@ -12,7 +12,7 @@ div[data-tree-model] ul{
 
 .ace_editor { height: 500px; }
 
-.control li{
+.control > li{
 cursor: pointer;
 display: block;
 float: left;
@@ -101,7 +101,6 @@ hr {
     position: absolute;
     right: 0;
     top: 0;
-    background-color:#444444;
 }
 
 .divider {
@@ -123,7 +122,6 @@ hr {
 }
 
 .navbar-blue .dropdown-menu li a {color:#2A4888;}
-.navbar-blue .dropdown-menu li > a {padding-left:30px;}
 
 .navbar-blue li>a:hover, .navbar-blue li>a:focus, .navbar-blue .open, .navbar-blue .open>a, .navbar-blue .open>a:hover, .navbar-blue .open>a:focus {
    background-color:#2A4888;
@@ -146,12 +144,6 @@ hr {
 	padding-top:0px;
 }
 
-#sidebar, #sidebar a, #sidebar-footer a {
-    color:#ffffff;
-    background-color:transparent;
-	text-shadow:0 0 2px #000000;
-    padding-left:5px;
-}
 #sidebar .nav li>a:hover {
     background-color:#393939;
 }
@@ -274,10 +266,11 @@ small.text-muted {
 }
 
 .dropdown ul.dropdown-menu {
-    border-radius:4px;
-    box-shadow:none;
-    margin-top:20px;
-    width:250px;
+   border-radius: 4px;
+box-shadow: none;
+margin-top: 6px;
+width: 204px;
+margin-left: -29px;
 }
 
 .dropdown ul.dropdown-menu:before {
@@ -289,6 +282,10 @@ small.text-muted {
     top: -10px;
     right: 16px;
     z-index: 10;
+}
+
+.position-fixed {
+  position: fixed;
 }
 
 .dropdown ul.dropdown-menu:after {
