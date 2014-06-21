@@ -98,20 +98,41 @@ angular.module("eadApp")
 	});
 	
 })
-.controller("explorerCtrl", function($scope, $rootScope, FileService){
+.controller("explorerCtrl", function($scope, $rootScope, CompileRunService){
 	
 	$scope.files=[];
 	
+	$scope.selectedFile = {};
+	
+	$scope.username = "Marcel";
+	
 	$scope.loadFile= function(file){
 		if(file.src){
+			$scope.selectedFile = file;
 			$rootScope.$broadcast("loadFile", {file: file});
 		}
 	};
 	
 	$scope.$on("projectFiles", function(events, args) {
 		$scope.files = [args.files];
+		CompileRunService.connect();
 		$scope.$apply();
 		
+	});
+	
+	$scope.compileResult = "";
+	
+	$scope.compileandrun = function(){
+		var path = $scope.files[0].path;
+		var mainClassName = $scope.selectedFile.label;
+		CompileRunService.compileAndRun(path, mainClassName, $scope.username);
+	};
+	
+	//message received from server 
+	CompileRunService.subscribe(function(message){
+		console.log(message);
+		$scope.compileResult = message;
+		$scope.$apply();
 	});
 	
 	

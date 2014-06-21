@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class CompileRunDebugService {
 
+	private final String projectsBaseUrl = "/home/ubuntu/inf380/";
+
 	/************Constructor***************/
 	public CompileRunDebugService(){
 
@@ -24,11 +26,17 @@ public class CompileRunDebugService {
 		String result = null;
 		boolean success=true;
 		System.out.println( "Compiling files from "+ sourcesDirPathName+"..." );
+		//create bin directory if not exist
+		File file = new File(classOutputDirPathName);
+		if(!file.exists()){
+			file.mkdir();
+		}
 		//compile all the java files with the command javac
 		//the class files generated are put in the directory classOutputDir
 		ArrayList<File> javaFiles=getPkgFiles(sourcesDirPathName);
 		for(int i=0; i<javaFiles.size() && success; i++){
-			Process p = Runtime.getRuntime().exec( "javac -d "+classOutputDirPathName+" "+javaFiles.get(i).getAbsolutePath() );
+			Process p = Runtime.getRuntime()
+					.exec( "javac -d "+classOutputDirPathName+" -sourcepath  "+sourcesDirPathName+ " "+javaFiles.get(i).getAbsolutePath() );
 			try {
 				//wait process end
 				p.waitFor();
@@ -36,9 +44,9 @@ public class CompileRunDebugService {
 			int ret = p.exitValue();
 			success=(ret==0);
 			if(!success){
-				result="Compilation Failed! /r";
+				result="Compilation Failed!\n";
 				try {
-					result=result+getLines("----compilation error----",p.getErrorStream());
+					result += "----compilation error----\n" +getLines(p.getErrorStream());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -62,9 +70,9 @@ public class CompileRunDebugService {
 		try {
 			//run the class containing the method main with the command java
 			Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
-			error=getLines("----stderr----", p.getErrorStream());
-			if(error==null){
-				result=getLines("----Result----", p.getInputStream());
+			error=getLines(p.getErrorStream());
+			if(error.equals("")){
+				result=getLines( p.getInputStream());
 			}
 			else{
 				result=error;
@@ -100,17 +108,12 @@ public class CompileRunDebugService {
 	/**
 	 * Print the lines in the stream
 	 */
-	public String getLines(String name, InputStream is) throws Exception {
-		String result = null;
+	public String getLines(InputStream is) throws Exception {
+		String result = "";
 		String line = null;
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		line = br.readLine();
-		if(line!=null){
-			result=result+"/r"+name;
-			while (line!= null) {
-				result=result+"/r"+line;
-				line = br.readLine();
-			}
+		while ((line = br.readLine())!= null) {
+			result += line + "\n";
 		}
 		return result;
 	}
@@ -121,13 +124,22 @@ public class CompileRunDebugService {
 	public ArrayList<File> getPkgFiles(String pkgPathName){
 		File[] files=new File(pkgPathName).listFiles();
 		ArrayList<File> javaFiles=new ArrayList<File>();
-		for(int i=0; i<files.length; i++){
-			if(files[i].getName().endsWith(".java")){
-				javaFiles.add(files[i]);
+
+		for (File file : files) {
+			if(file.isDirectory()){
+				javaFiles.addAll(getPkgFiles(file.getAbsolutePath()));
+			}else{
+				if(file.getName().endsWith(".java")){
+					javaFiles.add(file);
+				}
 			}
 		}
 		return javaFiles;
 
+	}
+
+	public String getProjectsBaseUrl() {
+		return projectsBaseUrl;
 	}
 
 }
