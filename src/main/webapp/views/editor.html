@@ -1,5 +1,5 @@
-<div ng-controller="editorCtrl">
-<div class="editor" ng-show="showEditor()">
+<div ng-controller="editorCtrl" class="editor">
+<div ng-show="showEditor()">
 			<div class="editor-tabs-shell">
 				<div class="editor-tabs" tab-resize="openFiles">
 					<div class="editor-tab" ng-repeat="file in openFiles" ng-style="{'width': tabWidth}" ng-click="setSelectedIndex($index)">

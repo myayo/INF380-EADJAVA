@@ -73,8 +73,8 @@ angular.module("eadApp")
 			compileRunService.callback("DISCONNECTED");
 		};
 		
-		webSocket.message = function(message){
-			compileRunService.callback(message);
+		webSocket.onmessage = function(message){
+			compileRunService.callback(message.data);
 		};
 		
 		compileRunService.ws = webSocket;

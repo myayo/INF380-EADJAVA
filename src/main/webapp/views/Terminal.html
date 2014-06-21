@@ -16,13 +16,10 @@ width:1000;
 overflow:scroll;
 }
 </style>
+<div ng-controller="explorerCtrl" ng-show="showConsole()">
 <div class="ex" >Console</div>
-<div class="console" >No consoles to display at this time.<br>No consoles to display at this time.<br>
-No consoles to display at this time.<br>No consoles to display at this time.<br>
-No consoles to display at this time.<br>
-No consoles to display at this time.<br>
-No consoles to display at this time.<br>
-No consoles to display at this time.<br>
-No consoles to display at this time.<br>
-No consoles to display at this time.<br>
+<div class="console">
+	{{compileResult}}
 </div>
+</div>
+

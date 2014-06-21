@@ -46,7 +46,7 @@ public class CompileRunDebugService {
 			if(!success){
 				result="Compilation Failed!\n";
 				try {
-					result +=getLines("----compilation error----",p.getErrorStream());
+					result += "----compilation error----\n" +getLines(p.getErrorStream());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -70,9 +70,9 @@ public class CompileRunDebugService {
 		try {
 			//run the class containing the method main with the command java
 			Process p = Runtime.getRuntime().exec( "java -cp "+classOutputDirPathName+" "+ mainClassName );
-			error=getLines("----stderr----", p.getErrorStream());
-			if(error==null){
-				result=getLines("----Result----", p.getInputStream());
+			error=getLines(p.getErrorStream());
+			if(error.equals("")){
+				result=getLines( p.getInputStream());
 			}
 			else{
 				result=error;
@@ -108,17 +108,12 @@ public class CompileRunDebugService {
 	/**
 	 * Print the lines in the stream
 	 */
-	public String getLines(String name, InputStream is) throws Exception {
-		String result = null;
+	public String getLines(InputStream is) throws Exception {
+		String result = "";
 		String line = null;
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		line = br.readLine();
-		if(line!=null){
-			result=result+"/r"+name;
-			while (line!= null) {
-				result=result+"/r"+line;
-				line = br.readLine();
-			}
+		while ((line = br.readLine())!= null) {
+			result += line + "\n";
 		}
 		return result;
 	}

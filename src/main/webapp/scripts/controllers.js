@@ -120,6 +120,8 @@ angular.module("eadApp")
 		
 	});
 	
+	$scope.compileResult = "";
+	
 	$scope.compileandrun = function(){
 		var path = $scope.files[0].path;
 		var mainClassName = $scope.selectedFile.label;
@@ -129,6 +131,8 @@ angular.module("eadApp")
 	//message received from server 
 	CompileRunService.subscribe(function(message){
 		console.log(message);
+		$scope.compileResult = message;
+		$scope.$apply();
 	});
 	
 	
