@@ -16,7 +16,7 @@ import model.Model;
 @WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final Model model;
+	private final LoginRegisterService logRegServ;
 
     /**
      * @throws IOException 
@@ -25,8 +25,7 @@ public class RegisterServlet extends HttpServlet {
     public RegisterServlet() throws IOException {
         super();
         // TODO Auto-generated constructor stub
-		model = new Model();
-		model.init();
+		logRegServ = new LoginRegisterService();
     }
 
 	/**
@@ -35,7 +34,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String username = request.getParameter("username");
 		String password = request.getParameter("pwd");
-		boolean userExist = model.userExist(username);
+		boolean userExist = logRegServ.userExist(username);
 		if(userExist){
 			response.sendRedirect("RegisterFailure.jsp");
 			
@@ -46,7 +45,7 @@ public class RegisterServlet extends HttpServlet {
 	           HttpSession session = request.getSession(true); 
 	           session.setAttribute("FirstName", username);
 	           //create user
-	           model.register(username, password);
+	           logRegServ.register(username, password);
 	           // redirect to success page
 	           response.sendRedirect("Profile.jsp"); 
 		}

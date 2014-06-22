@@ -29,32 +29,4 @@ public class Model {
 		br.close();
 	}
 
-
-	public boolean log(String login, String password){
-		boolean found=false;
-		for(int i=0; i<userList.size() && !found; i++){
-			if(userList.get(i).getLogin().equals(login) && userList.get(i).getPassword().equals(password) ){
-				found=true;
-			}
-		}
-		return found;
-	}
-
-	public boolean userExist(String username){
-		boolean found=false;
-		for(int i=0; i<userList.size() && !found; i++){
-			if(userList.get(i).getLogin().equals(username)){
-				found=true;
-			}
-		}
-		return found;
-	}
-	
-	public void register(String login, String password) throws IOException{
-		userList.add(new User(login, password));
-		FileWriter file = new FileWriter(new File("/Users/fatoumatananakasse/Downloads/workspace/Login/resources/users.txt"), true);
-		PrintWriter writer = new PrintWriter(file);
-		writer.println(login + " "+ password);
-		writer.close();
-	}
 }

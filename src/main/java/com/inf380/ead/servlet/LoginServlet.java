@@ -17,7 +17,7 @@ import model.Model;
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final Model model;
+	private final LoginRegisterService logRegSer;
 
     /**
      * @throws IOException 
@@ -26,8 +26,7 @@ public class LoginServlet extends HttpServlet {
     public LoginServlet() throws IOException {
         super();
         // TODO Auto-generated constructor stub
-		model = new Model();
-		model.init();
+        LoginRegisterService logRegServ = new LoginRegisterService();
     }
 
 	/**
@@ -36,7 +35,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	String username = request.getParameter("username");
 		String password = request.getParameter("pwd");
-		boolean userExist = model.log(username, password);
+		boolean userExist = logRegServ.log(username, password);
 		if(userExist){
 			 // fetch the session from request, create new session if session
            // is not present in the request
