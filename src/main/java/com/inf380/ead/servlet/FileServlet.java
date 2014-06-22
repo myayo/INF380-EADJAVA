@@ -6,20 +6,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class ProfileServlet
+ * Servlet implementation class FileServlet
  */
-@WebServlet("/ProfileServlet")
-public class ProfileServlet extends HttpServlet {
+@WebServlet("/FileServlet")
+public class FileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private final FileService fileService;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProfileServlet() {
+    public FileServlet() {
         super();
         // TODO Auto-generated constructor stub
+        fileService=new FileService();
     }
 
 	/**
@@ -27,7 +29,10 @@ public class ProfileServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		String pathName = request.getParameter("pathName");
+		String type = request.getParameter("type");
+		String content = request.getParameter("content");
+		fileService.createOrUpdateFile(pathName, type,content);
 	}
 
 	/**

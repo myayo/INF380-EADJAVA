@@ -8,18 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class LogoutServlet
+ * Servlet implementation class ProfileServlet
  */
-@WebServlet("/LogoutServlet")
-public class LogoutServlet extends HttpServlet {
+@WebServlet("/ExportServlet")
+public class ExportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private final ZipService zipService;
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogoutServlet() {
+    public ExportServlet() {
         super();
         // TODO Auto-generated constructor stub
+        zipService=new ZipService();
     }
 
 	/**
@@ -27,7 +29,8 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-        response.sendRedirect("index.html"); 
+		String pathname = request.getParameter("pathName");
+		zipService.createZip(String pathName);
 	}
 
 	/**
