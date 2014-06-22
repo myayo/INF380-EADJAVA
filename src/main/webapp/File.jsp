@@ -14,7 +14,7 @@
     		<td>Content</td>
             <td><input type="text" name=content></td>        
     	</center> 
-		<center><input type="button" name=finish value= Finish></center> 
+		<center><input type="submit" name=finish value= Finish></center> 
 		<center><input type="button" name=cancel value= Cancel onClick="window.close()"></center> 
 	</form>
     
