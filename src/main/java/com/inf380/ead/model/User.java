@@ -1,4 +1,4 @@
-package com.inf380.ead.model;
+package model;
 
 
 public class User {
